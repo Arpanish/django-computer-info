@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title%}
+Computer Specification Form
+{% endblock title%}
+{% block content %}
+<form action="" method="POST" enctype="multipart/form-data">
+    <h1><center>Add Computer Brand</center></h1>
+    {% csrf_token %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                {{form.brand_name.label_tag}} {{form.brand_name}} {{form.errors|striptags}}
+            </div>
+            </div>
+            <div class="col-md-6 offset-md-3">
+                {{form.logo.label_tag}} <br>{{form.logo}} {{form.errors|striptags}}
+            </div>
+           <br>
+            <button type="submit" class="btn btn-primary col-md-6 offset-md-3 register_button">Add</button>
+        </div>
+    </div>
+</form>
+{% endblock content%}

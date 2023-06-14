@@ -1,0 +1,452 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title%}
+Add Computers
+{% endblock title%}
+{% block content %} 
+<br>
+<form method="POST">
+    <h1><center>Add Computer Detail</center></h1>
+    {% csrf_token %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                {{form.computer_code.label_tag}}
+                {{form.computer_code}} {{form.errors|striptags}}
+            </div>
+            <div class="col-md-6 offset-md-3" >{{form.computer.label_tag}}
+                <select  class="form-select form-control border border-secondary shadow-sm p-2 mb-4 bg-body rounded rounded-0 formheight" style='height:40px;' id="computer" name="computer">
+                    {% comment %} <select onclick='myfun()'  class="form-select form-control border border-secondary shadow-sm p-2 mb-4 bg-body rounded rounded-0 formheight" id="computer" name="computer"> {% endcomment %}
+                    {% for brandname in brandname%} 
+                        <option  value="{{brandname.id}}">{{brandname.brand_name}}</option>
+                    {% endfor %}
+                    <input type="hidden" id="csrf_token" value="{{ csrf_token }}">
+                </select>
+            </div>
+            <div class="col-md-6 offset-md-3"><label>Computer Specification:</label>           
+                <select id="computerspecification_option" class="form-select form-control border border-secondary shadow-sm p-2 mb-4 bg-body rounded rounded-0 formheight" style='height:40px;'>
+                    {% for computer_specification in computer_specification %}
+                       <option id='{{computer_specification.id}}'>Generation: {{computer_specification.generation}} , RAM: {{computer_specification.ram}}</option>
+                    {% endfor%}
+                </select>
+            </div> 
+            <div class="col-md-6 offset-md-3">
+                {{form.quantity.label_tag}} {{form.quantity}} {{form.errors|striptags}}
+            </div>
+            <div class="col-md-6 offset-md-3">
+                {{form.unit_rate.label_tag}} {{form.unit_rate}} {{form.errors|striptags}}
+            </div>
+
+<div class="col-md-6 offset-md-3"><label>Take Image:</label><br>
+<!-- Button trigger modal -->
+<button type="button"  class="btn btn-md btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+    Capture Image
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" style="text-align:center; margin-left:auto;"  id="exampleModalLongTitle">Capture Image</h5>
+          <button type="button" onclick="vidOff()" class="close" data-dismiss="modal" aria-label="Close">
+            <span  aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+           <div id='results'>
+                <div>
+                  <video autoplay></video>
+                  <center><button id='getUserMediaButton' type="button" class="btn btn-primary" onclick="onGetUserMediaButtonClick()">Start Camera</button></center>
+                  <button type="button" id='takePhotoButton' onclick="onTakePhotoButtonClick()" class="btn btn-primary" style="display:none;margin-left:auto;margin-right:auto;" disabled>Take Photo</button>
+                </div>
+                <br>
+                <div>
+                  <canvas id='takePhotoCanvas'></canvas>
+                </div>
+              </div>
+          
+             
+              <div id="imgElement"></div>
+        {% comment %} </div>  {% endcomment %}
+        <div class="modal-footer">
+          {% comment %} <button type="button" id="addbutton" class="btn btn-primary" data-dismiss="modal" onclick="save()">OK</button> {% endcomment %}
+          <button type="button"  class="btn btn-primary" data-dismiss="modal" onclick="save()">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 offset-md-3">
+        <br>
+    {% comment %} <input style="display:none;border:0px;" id="imageName" value=""> {% endcomment %}
+    <div style="display:none;border:0px;" id="imageName"></div>
+    <div style="border:0px;" id="base64name"></div>
+    <input style="border:0px;" id="totalimage" name="totalimage">
+    {% comment %} <div style="border:0px;" id="totalimage"></div> {% endcomment %}
+</div>
+    <br><br>
+<br><br>
+    {% comment %} <button type="submit" class="btn btn-primary col-md-6 offset-md-3">Add</button> {% endcomment %}
+    <button type="submit" class="btn btn-primary col-md-6 offset-md-3">Add</button>
+</form>
+{% endblock content%}
+
+{% block javascript %}
+<script>
+
+    {% comment %} js of options(computer specification) {% endcomment %}
+$(document).ready(function(){
+    $('#computer').click(function(){
+        event.preventDefault();
+        var id = document.getElementById('computer').value;
+    
+        $.ajax({
+            url: "{% url 'ComputerSpecification_Opt' %}",
+            dataType: "json",
+            type: 'POST',
+            data: {'id':id,
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+        },
+            success: function(data){
+                console.log(data);
+                console.log('Success!');
+                data_arr =  data['data'];
+                console.log(data_arr); 
+                console.log(data_arr.length, 9090)
+                option_list = "";
+                for(i = 0; i< data_arr.length; i++){                    
+                    option = `<option id='${data_arr[i]['id']}'>Generation: ${data_arr[i]["generation"]} , RAM =${data_arr[i]["ram"]} GB</option>`
+                    console.log(option, 7777)
+                    option_list+=option
+                }
+                console.log(option_list, 7878)
+                $("#computerspecification_option").empty().prepend(option_list);
+            },
+            
+        });
+        return false;
+    });
+});
+
+{% comment %} js for webcam capture multiple image {% endcomment %}
+
+function onGetUserMediaButtonClick() {
+    console.log(1230900909)
+    navigator.mediaDevices.getUserMedia({video: true})
+    .then(mediaStream => {
+    document.querySelector('video').srcObject = mediaStream;
+    const track = mediaStream.getVideoTracks()[0];
+    imageCapture = new ImageCapture(track);
+    document.getElementById("getUserMediaButton").style.display = "none";
+    document.getElementById("takePhotoButton").style.display = "block";
+    })
+    .catch(error => ChromeSamples.log(error)); 
+    } 
+
+    {% comment %} {% comment %} $('#exampleModalCenter').on('hide.bs.modal', function (e) {
+        Webcam.reset();
+    }); {% endcomment %}
+
+        function onTakePhotoButtonClick() {
+            var blob = imageCapture.takePhoto()
+            .then(blob =>  createImageBitmap(blob)) 
+            .then(imageBitmap => {
+              const canvas = document.querySelector('#takePhotoCanvas');
+              drawCanvas(canvas, imageBitmap);
+              console.log(imageBitmap);       
+              console.log(canvas);
+            })
+            .catch(error => ChromeSamples.log(error));  
+            }  
+        
+
+            {% comment %} var counter =  document.getElementById('imgElement').childElementCount; {% endcomment %}
+
+        function drawCanvas(canvas, img) {
+          var counter =  document.getElementById('imgElement').childElementCount;
+          console.log(counter);
+
+          canvas.width = getComputedStyle(canvas).width.split('px')[0];
+          canvas.height = getComputedStyle(canvas).height.split('px')[0];
+          let ratio  = Math.min(canvas.width / img.width, canvas.height / img.height);
+          let x = (canvas.width - img.width * ratio) / 2;
+          let y = (canvas.height - img.height * ratio) / 2;
+          canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+          canvas.getContext('2d').drawImage(img, 0, 0, img.width, img.height,
+              x, y, img.width * ratio, img.height * ratio);    
+          var imagetobase64 = canvas.toDataURL();
+          console.log(imagetobase64);
+          var imgElem = new Image()
+          imgElem.src = imagetobase64;
+          imgElem.width = 130;    
+          
+          
+          // Set a name for the image
+          const date = new Date();
+          imgElem.name = "image_" + date.getTime();
+          <!-- imgElem.setAttribute('src',imagetobase64); -->
+          document.getElementById('imgElement').appendChild(imgElem);
+        }
+        document.querySelector('video').addEventListener('play', function() {
+          document.querySelector('#takePhotoButton').disabled = false;
+        });
+
+
+        function save() {
+            var counter =  document.getElementById('imgElement').childElementCount;
+            document.getElementById('totalimage').value = counter;
+        {% comment %} const imgElements = document.getElementsByTagName("img");
+        const imgCount = imgElements.length;
+        const imageName = document.getElementById("imageName");
+        let imagesName = "";
+        for (let i = 0; i < imgCount; i++) {
+            imagesName += imgElements[i].name + ",";
+        }
+        imageName.value = imagesName;
+        document.getElementById("imageName").style.display='block';  {% endcomment %}
+
+        const canvas = document.querySelector('#takePhotoCanvas');
+        var imagetobase64 = canvas.toDataURL();
+        const imgElements = document.getElementsByTagName("img");
+        const imgCount = imgElements.length;
+        console.log(imgCount);
+        {% comment %} document.getElementById('totalimage').value = imgCount; {% endcomment %}
+
+        const imageName = document.getElementById("imageName");
+        for (let i = 0; i < imgCount; i++) {
+            var x = document.createElement("input");
+            x.setAttribute("id",i);
+            x.setAttribute("name",i);
+            x.setAttribute("value", imagetobase64);
+            document.getElementById('base64name').appendChild(x); 
+
+            var imgElem = new Image()
+            imgElem.src = imgElements[i].src;
+            imgElem.width=130;
+            document.getElementById('imageName').appendChild(imgElem);
+            
+        }
+        {% comment %} this will stop camera after clicking ok button {% endcomment %}
+        document.querySelector('video').srcObject.getTracks().forEach(track => track.stop());
+        document.getElementById("getUserMediaButton").style.display = "block";
+        document.getElementById("takePhotoButton").style.display = "none";
+        document.getElementById("imageName").style.display='block';
+       
+
+
+{% comment %} it will stop camera after image capture and save button is clicked {% endcomment %}
+            {% comment %} const video = document.querySelector('video');
+            const mediaStream = video.srcObject;
+            const tracks = mediaStream.getTracks(); 
+            tracks[0].stop(); {% endcomment %}
+        }
+
+        {% comment %} for x of modal to stop camera {% endcomment %}
+        function vidOff() {
+            const video = document.querySelector('video');
+
+            // A video's MediaStream object is available through its srcObject attribute
+            const mediaStream = video.srcObject;
+
+            // Through the MediaStream, you can get the MediaStreamTracks with getTracks():
+            const tracks = mediaStream.getTracks();
+
+            // Tracks are returned as an array, so if you know you only have one, you can stop it with: 
+            tracks[0].stop();
+
+        };
+
+
+
+
+
+
+
+
+
+        {% comment %} $(document).ready(function(){
+            $('#addbutton').click(function(){
+                event.preventDefault();
+                var totalimage = document.getElementById('imgElement').childElementCount;
+            
+                $.ajax({
+                    url: "{% url 'computercreate' %}",
+                    dataType: "json",
+                    type: 'POST',
+                    data: {'totalimage':totalimage,
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                    success: function(data){
+                        console.log(data);
+                        console.log('Success!');
+                        data_arr =  data['data'];
+                        console.log(data_arr); 
+                        console.log(data_arr.length, 9090)
+                        option_list = "";
+                        for(i = 0; i< data_arr.length; i++){                    
+                            option = `<option id='${data_arr[i]['id']}'>Generation: ${data_arr[i]["generation"]} , RAM =${data_arr[i]["ram"]} GB</option>`
+                            console.log(option, 7777)
+                            option_list+=option
+                        }
+                        console.log(option_list, 7878)
+                        $("#computerspecification_option").empty().prepend(option_list);
+                    },
+                    
+                });
+                return false;
+            });
+        }); {% endcomment %}
+
+
+        {% comment %} function save() {
+            var canvas = document.querySelector('#takePhotoCanvas');
+            var dataURL = canvas.toDataURL();
+            var blob = dataURItoBlob(dataURL);
+            var file = new File([blob], "webcam_capture."+Date.now()+"jpeg", { type: "image/jpeg" });
+            console.log(file.name);
+
+        }
+
+        function dataURItoBlob(dataURI) {
+            var byteString = atob(dataURI.split(',')[1]);
+            var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+            var ab = new ArrayBuffer(byteString.length);
+            var ia = new Uint8Array(ab);
+            for (var i = 0; i < byteString.length; i++) {
+                ia[i] = byteString.charCodeAt(i);
+            }
+            return new Blob([ab], { type: mimeString });
+        }
+         {% endcomment %}
+
+
+
+
+
+
+
+
+{% comment %} end {% endcomment %}
+
+
+{% comment %} js for webcam capture and send to view {% endcomment %}
+{% comment %} $('#exampleModal').on('shown.bs.modal', function (e) {
+    Webcam.set({
+        width: 350,
+        height: 287,
+        image_format: 'jpeg',
+        jpeg_quality: 90
+       });	 
+       Webcam.attach( '#my_camera' ); });
+    $('#exampleModal').on('hide.bs.modal', function (e) {
+        Webcam.reset();
+    });
+      function take_snapshot() {
+        Webcam.snap( function(data_uri) {
+       // display results in page
+       document.getElementById('results').innerHTML = 
+        '<img class="after_capture_frame" src="'+data_uri+'"/>';
+       $("#captured_image_data").val(data_uri);
+       });	  }        
+      function saveSnap(){
+       var base64data = $("#captured_image_data").val();
+       $.ajax({
+           type: "POST",
+           dataType: "json",
+           url:  "{% url 'images' %}",
+           data: {'image': base64data,
+           csrfmiddlewaretoken: '{{ csrf_token }}',
+   },
+           success: function(data) { 
+               alert('successful');
+           }, });    
+          Webcam.reset();} {% endcomment %}
+
+
+ {% comment %} function myfun(){
+        var id = document.getElementById('computer').value;
+        console.log(id);
+        var csrftoken = document.getElementById("csrf_token").value;
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "{% url 'ComputerSpecification_Opt' %}", true);
+        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE){
+                if (xhr.status === 200) {
+                    console.log(xhr);
+                }
+                else{
+                    console.log("Sorry");
+                }
+            }      
+        };
+        xhr.send("id=" + id); 
+    }    {% endcomment %}
+</script>
+
+{% endblock javascript %}
+{% comment %} </body>
+</html> {% endcomment %}
+
+
+
+
+
+{% comment %} js for webcam capture and send to view {% endcomment %}
+{% comment %} $('#exampleModal').on('shown.bs.modal', function (e) {
+    Webcam.set({
+        width: 350,
+        height: 287,
+        image_format: 'jpeg',
+        jpeg_quality: 90
+       });	 
+       Webcam.attach( '#my_camera' ); });
+    $('#exampleModal').on('hide.bs.modal', function (e) {
+        Webcam.reset();
+    });
+      function take_snapshot() {
+        Webcam.snap( function(data_uri) {
+       // display results in page
+       document.getElementById('results').innerHTML = 
+        '<img class="after_capture_frame" src="'+data_uri+'"/>';
+       $("#captured_image_data").val(data_uri);
+       });	  }        
+      function saveSnap(){
+       var base64data = $("#captured_image_data").val();
+       $.ajax({
+           type: "POST",
+           dataType: "json",
+           url:  "{% url 'images' %}",
+           data: {'image': base64data,
+           csrfmiddlewaretoken: '{{ csrf_token }}',
+   },
+           success: function(data) { 
+               alert('successful');
+           }, });    
+          Webcam.reset();} {% endcomment %}
+
+
+ {% comment %} function myfun(){
+        var id = document.getElementById('computer').value;
+        console.log(id);
+        var csrftoken = document.getElementById("csrf_token").value;
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "{% url 'ComputerSpecification_Opt' %}", true);
+        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE){
+                if (xhr.status === 200) {
+                    console.log(xhr);
+                }
+                else{
+                    console.log("Sorry");
+                }
+            }      
+        };
+        xhr.send("id=" + id); 
+    }    {% endcomment %}

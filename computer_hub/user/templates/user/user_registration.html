@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title%}
+User Registration Form
+{% endblock title%}
+{% block content %}
+<br><br><br>
+<h1>User Registration Form</h1>
+<form action='' method = 'POST' class="user_registration_form">
+    {% csrf_token %}
+    <div class="container-fluid">
+        <div class="row ">
+            <div class="col-md-6 offset-md-3">
+                {{form.username.label_tag}} {{form.username}} {{form.errors|striptags}}
+            </div>
+                <div  class="col-3 offset-md-3">
+                {{form.first_name.label_tag}} {{form.first_name}} {{form.errors|striptags}}
+                </div>
+                <div  class="col-3 ">
+                {{form.last_name.label_tag}} {{form.last_name}} {{form.errors|striptags}}
+                </div>
+                <div class="col-md-6 offset-md-3">
+                    {{form.email.label_tag}} {{form.email}} {{form.errors|striptags}}
+                </div>
+                    <div class="col-md-6 offset-md-3">
+                        {{form.password.label_tag}} {{form.password}} {{form.errors|striptags}}
+                    </div>
+                    <div class="col-md-6 offset-md-3">
+                        {{form.password_confirmation.label_tag}} {{form.password_confirmation}} {{form.errors|striptags}}
+                    </div>
+                    <button type="submit" class="btn btn-primary col-md-6 offset-md-3 register_button">Register</button>
+        </div>
+    </div>
+</form>
+{% endblock content%}
+

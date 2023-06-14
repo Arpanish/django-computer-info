@@ -1,0 +1,199 @@
+.aunderline{
+    color:rgb(243, 239, 239);
+    text-decoration: none;
+}
+a:hover{
+    text-decoration: none;
+}
+
+.createcomputerinfo{
+    font-size: larger;
+    font-weight: bolder;
+    margin-left: 5%; 
+}
+.computername{
+    text-decoration: none; 
+    color:black;
+}
+table {
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto; 
+ }
+th,td{
+    padding-left: 10px;
+    
+}
+.submain{
+    width:20%;
+    padding: 20px;
+    margin-top: 4%;
+    margin-left: auto;
+    margin-right: auto;
+} 
+.submain{
+    text-align:left;
+    margin-top: 5%;
+    padding-left: 17%;
+}
+.detail{
+    margin-top: 15px;
+    padding: 2px;
+}
+
+.text{
+    font-weight:500;
+    font-size: large;
+}
+.allcomputers{
+    font-size: large;
+    font-weight: 500;
+}
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+h1{
+    text-align: center;
+}
+a{
+    color:white;
+    text-decoration: none;
+}
+a:hover{
+    color:white;
+}
+.loginimg{
+    margin-top: 15%;
+}
+.text{
+    padding-top: 2%;
+}
+.end{
+    padding:7%;
+}
+.textt{
+    text-align: center;
+    padding:22%;
+    background-color: #498af8;
+}
+h2{
+    color:white;
+   
+}
+.navele{
+    font-weight:500;
+    background-color: aquamarine;
+}
+.user{
+    font-weight: 500;
+}
+.aunderline{
+    text-decoration: none;
+}
+.user_registration_form{
+    color:rgb(120, 117, 117);
+    font-size: large;
+}
+.register_button{
+    font-size: large;
+}
+.formheight{
+    height:40px;
+}
+
+.dropdown-toggle::after {
+    border-top: none; 
+}
+
+.navbar-expand-lg .navbar-nav .dropdown-menu {
+    position: unset;
+}
+
+
+.btn {
+    display: inline;
+}
+
+
+.dropdown-menu.show {
+    display: block;
+    position: absolute;
+    right: 0px;
+}
+.common_profile{
+    border-radius: 50%;
+}
+.dropdown-menu {
+  left:auto;
+  right:auto;
+}
+
+.nav_pp{
+list-style-type:none;
+}
+.divclass{
+width:95%;
+margin-left:auto;
+margin-right:auto;
+}
+.cgd{
+    border-radius: 50%;
+}
+/* .dropdown-toggle::after {
+   visibility: hidden;
+  } */
+
+
+
+
+  /* webcam */
+  #results > div {
+    /* width: 33%; */
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    line-height: 24px;
+  }
+  
+  @media (max-width: 814px) {
+  
+    #results {
+      flex-flow: column;
+    }
+    
+    #results > div {
+      width: 100%;
+      margin-bottom: 24px;
+    }
+  
+  }
+  
+  video, canvas {
+    object-fit: contain;
+    border: 2px solid rgba(255, 255, 255, 1);
+    background: #263238;
+    height: 198px;
+    /* width:100%; */
+  
+  } 
+  
+  canvas#takePhotoCanvas {
+    visibility: hidden;
+}
+#imgElement 
+{
+    margin-top: -220px;
+    margin-left: 8%;
+    margin-right: auto;
+}
+/* end */

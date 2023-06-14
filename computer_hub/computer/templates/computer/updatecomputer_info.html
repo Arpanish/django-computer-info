@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title%}
+Registration of Computers
+{% endblock title%}
+
+{% block content %}
+<br><br><br><br>
+<h1>Update Computer Information</h1>
+<form method="POST" class="user_registration_form">
+    {% csrf_token %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+              {{updatecomputerinfo.computer_code.label_tag}}
+                 {{updatecomputerinfo.computer_code}} {{updatecomputerinfo.errors|striptags}}
+            </div>
+           <div class="col-md-6 offset-md-3">{{updatecomputerinfo.computer.label_tag}}
+                <select class="form-select form-control border border-secondary shadow-sm p-2 mb-4 bg-body rounded rounded-0 formheight" id="computer" name="computer">                   
+                    {% for brandname in brandname%}
+                    <option value="{{brandname.id}}">{{brandname.brand.brand_name}}</option>
+                    {% endfor %} 
+                  </select>
+                </div> 
+                 {% comment %} <div class="col-md-6 offset-md-3">
+                    {{updatecomputerinfo.computer.label_tag}} {{updatecomputerinfo.computer}} {{updatecomputerinfo.errors|striptags}}
+                </div>  {% endcomment %}
+                    <div class="col-md-6 offset-md-3">
+                        {{updatecomputerinfo.quantity.label_tag}} {{updatecomputerinfo.quantity}} {{updatecomputerinfo.errors|striptags}}
+                    </div>
+                    <div class="col-md-6 offset-md-3">
+                        {{updatecomputerinfo.unit_rate.label_tag}} {{updatecomputerinfo.unit_rate}} {{updatecomputerinfo.errors|striptags}}
+                    </div>
+                    <button type="submit" class="btn btn-primary col-md-6 offset-md-3 register_button">Update</button>
+        </div>
+    </div> 
+
+  {% comment %} {% csrf_token %}
+{{updatecomputerinfo.as_p}}
+<input type="submit" value="Update"> 
+<a href="{% url 'computerlist'%}"><input type="submit" value="Back to home"></a>  {% endcomment %}
+</form>
+    {% endblock content%}
+   
+    

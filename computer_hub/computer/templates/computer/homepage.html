@@ -1,0 +1,279 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+  <br><br>
+  <div class="container rowclass">
+    <div class="row">
+      <div class="col-2 col-md-2 col-lg-2 col-xl-2 allcomputers">All Computers</div>
+      <div class="col-7 col-md-6 col-lg-7 col-xl-7 col-xxl-8"></div>
+      <div class="col-3 col-md-4 col-lg-3 col-xl-3 col-xxl-2"><a class="btn btn-primary col-sm-8 offset-sm-4" href="{% url 'computercreate' %}">Add Computer</a></div>
+    </div>
+  {% comment %} </div> {% endcomment %}
+  <br>
+  <table class="table">
+    <thead class='table-primary'>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Logo</th>
+        <th scope="col">Computer Name</th>
+        <th scope="col">RAM</th>
+        <th scope="col">Generation</th>
+        <th scope="col">Maximum Price</th>
+        <th scope="col">Minimum Price</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        {% for lists in Computerlist %}
+        <td>{{lists.id}}</td>
+          <td><h6><img src="{{lists.computer.brand.logo.url}}" width ="50" height = "40"><h6></td>
+          <td><h6>{{lists.computer.brand.brand_name}}<h6></td>
+          <td><h6>{{lists.computer.ram}} GB<h6></td>
+          <td><h6>{{lists.computer.generation}}<h6></td>
+          <td><h6>{{lists.computer.price_max}}<h6></td>
+            <td><h6>{{lists.computer.price_min}}<h6></td>
+          <td>
+            {% comment %} edit button {% endcomment %}
+            <a href="{% url 'computerupdate' lists.id %}" class="btn btn-warning btn-sm">Edit</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% comment %} detail button {% endcomment %}
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#exampleModalCenterdetail-{{lists.id}}">
+  Detail
+</button>
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenterdetail-{{lists.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h5 style='width:50%;margin-left:auto;margin-right;auto;text-align:center;' class="modal-title" id="exampleModalLongTitle">Computer Detail</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center">
+          <img src="{{lists.computer.brand.logo.url}}" width="100" height = "70">
+          </div><br>
+          <table class="table table-bordered">
+            <tbody>
+              <tr>
+                <td>Computer Name</td>
+                <td>{{lists.computer.brand.brand_name}}</td>
+              </tr>
+              <tr>
+                <td>Computer Code</td>
+                <td>{{lists.computer_code}}</td>
+                
+              </tr>
+              <tr>
+                <td>Generation</td>
+                <td>{{lists.computer.generation}}</td>
+              </tr>
+              <tr>
+                <td>RAM</td>
+                <td>{{lists.computer.ram}} GB</td>
+              </tr>
+              <tr>
+                <td>Unit Rate</td>
+                <td>{{lists.unit_rate}}</td>
+              </tr> 
+              
+              <tr>
+                <td>Maximum Price</td>
+                <td>{{lists.computer.price_max}}</td>
+              </tr>
+              <tr>
+                <td>Minimum Price</td>
+                <td>{{lists.computer.price_min}}</td>
+              </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% comment %} detail button {% endcomment %}
+              <!-- Button trigger modal -->
+{% comment %} <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{lists.id}}">
+  Detail
+</button> {% endcomment %}
+
+<!-- Modal -->
+{% comment %} <div class="modal fade" id="staticBackdrop-{{lists.id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+      
+        <h4 class="modal-title" id="staticB">Computer Detail</h4>
+     
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+
+
+
+      <div class="modal-body">
+        <div class="text-center">
+        <img src="{{lists.computer.brand.logo.url}}" width="100" height = "70">
+        </div><br>
+        <table class="table table-bordered">
+          <tbody>
+            <tr>
+              <td>Computer Name</td>
+              <td>{{lists.computer.brand.brand_name}}</td>
+            </tr>
+            <tr>
+              <td>Computer Code</td>
+              <td>{{lists.computer_code}}</td>
+              
+            </tr>
+            <tr>
+              <td>Generation</td>
+              <td>{{lists.computer.generation}}</td>
+            </tr>
+            <tr>
+              <td>RAM</td>
+              <td>{{lists.computer.ram}} GB</td>
+            </tr>
+            <tr>
+              <td>Unit Rate</td>
+              <td>{{lists.unit_rate}}</td>
+            </tr> 
+            
+            <tr>
+              <td>Maximum Price</td>
+              <td>{{lists.computer.price_max}}</td>
+            </tr>
+            <tr>
+              <td>Minimum Price</td>
+              <td>{{lists.computer.price_min}}</td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          </div> {% endcomment %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% comment %} delete button {% endcomment %}
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#exampleModalCenter-{{lists.id}}">
+  Delete
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter-{{lists.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Delete Computer </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete the computer??
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary"><a class="text-light" href = "{% url 'computerdelete' lists.id %}">Yes</a></button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          </td>
+        </tr>
+        {% endfor %}
+   
+
+{% endblock content %} 

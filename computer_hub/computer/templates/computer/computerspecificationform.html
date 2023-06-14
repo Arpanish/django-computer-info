@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title%}
+Computer Specification Form
+{% endblock title%}
+{% block content %}
+<form action="" method="POST">
+    <h1><center>Add Computer Specification</center></h1>
+    {% csrf_token %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                {{form.brand.label_tag}} {{form.brand}} {{form.errors|striptags}}
+            </div>
+            </div>
+            <div class="col-md-6 offset-md-3">
+                {{form.generation.label_tag}} {{form.generation}} {{form.errors|striptags}}
+            </div>
+            <div class="col-md-6 offset-md-3">
+                {{form.ram.label_tag}} {{form.ram}} {{form.errors|striptags}}
+            </div>
+            <div class="col-md-6 offset-md-3">
+                {{form.price_min.label_tag}} {{form.price_min}} {{form.errors|striptags}}
+            </div>
+            <div class="col-md-6 offset-md-3">
+                {{form.price_max.label_tag}} {{form.price_max}} {{form.errors|striptags}}
+            </div>
+            <button type="submit" class="btn btn-primary col-md-6 offset-md-3 register_button">Add</button>
+        </div>
+    </div>
+</form>
+{% endblock content%}

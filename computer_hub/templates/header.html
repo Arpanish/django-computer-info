@@ -1,0 +1,136 @@
+{% comment %} <header>
+          <nav class="navbar navbar-expand-lg navbar-light bg-light">
+              <div class="container-fluid">
+                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                  <ul class="navbar-nav">
+                    {% if request.user.is_active %}
+                    <li class="nav-item">
+                      <a class="nav-link active" style='margin-right:20px;' aria-current="page" href="{% url 'computerlist' %}">Computer</a>
+                    </li>
+                    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">Logout</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                            Are you sure you want to logout?
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-primary "><a class="text-light aunderline" href = "{% url 'userlogout'%}">Yes</a></button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                       {% else %}
+                          <li class="nav-item"><a href="{% url 'userregistration' %}" class="nav-link active" aria-current="page">Register</a>
+                    {% endif %}
+                  </ul>
+                </div>
+              </div>
+              <li class="nav-item nav_pp">
+                <div class="cgd">
+                  <button class="btn btn-success dropdown-toggle common_profile" style="border-radius:50%;"  type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <b>{{request.user.username.0|capfirst}}</b>
+                  </button>
+                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="{% url 'userlist' %}">User</a>
+                    <a class="dropdown-item" href="{% url 'usersettings' %}">Settings</a>
+                    <a class="dropdown-item" href="#staticBackdrop" data-bs-toggle="modal" data-toggle="modal">Logout</a> 
+                  </div> 
+                </div> </li>
+            </nav>
+        </header> {% endcomment %}
+
+
+
+
+
+ <!DOCTYPE html>
+ <html lang="en">
+<head>
+     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <style>
+      .dropdown-menu.show {
+        display: block;
+        position: absolute;
+        right: 0px;
+    }
+      .setting_profile{
+        border-radius: 50%;
+    }
+    .dropdown-menu {
+      left:auto;
+      right:auto;
+  }
+  .dropdown-toggle::after {
+    display:none;
+  }
+  .nav_pp{
+    list-style-type:none;
+  }
+  .divclass{
+    width:95%;
+    margin-left:auto;
+    margin-right:auto;
+   }
+    </style>
+
+</head>
+<body> 
+  <header> 
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav">
+              {% if request.user.is_active %}
+              <li class="nav-item">
+                <a class="nav-link active" style='margin-right:20px;' aria-current="page" href="{% url 'computerlist' %}">Computer</a>
+              </li>
+              <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="staticBackdropLabel">Logout</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      Are you sure you want to logout?
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-primary "><a class="text-light aunderline" href = "{% url 'userlogout'%}">Yes</a></button>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+                 {% else %}
+                    <li class="nav-item"><a href="{% url 'userregistration' %}" class="nav-link active" aria-current="page">Register</a>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+        <li class="nav-item nav_pp">
+          <div class="cgd">
+            <button class="btn btn-success dropdown-toggle setting_profile"  type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <b>{{request.user.username.0|capfirst}}</b>
+            </button>
+             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" href="{% url 'userlist' %}">User</a>
+              <a class="dropdown-item" href="{% url 'usersettings' %}">Settings</a>
+              <a class="dropdown-item" href="#staticBackdrop" data-bs-toggle="modal" data-toggle="modal">Logout</a> 
+            </div> 
+          </div> </li>
+      </nav>
+  </header> 
+</body>
+</html>  

@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title%}
+List Of Users
+{% endblock title%}
+{% block content %}
+<div class="container-fluid" style= "width:90%;margin-left:auto; margin-right:auto;">
+  <br><br><br><br>
+  <div class="row">
+    <div class="col-sm-2 user">All Users</div>
+    <div class="col-sm-2 offset-sm-8">
+      <a class="btn btn-success col-sm-8 offset-sm-4" style="border-radius:3px;" href="{% url 'userregistration' %}">Register User</a>
+  </div>
+</div>
+<br>
+<table class="table">
+  <thead class='table-primary'>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Username</th>
+      <th scope="col">First Name</th>
+      <th scope="col">Last Name</th>
+      <th scope="col">Email</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      {% for user in object_list %}
+      <td>{{user.id}}</td>
+      <td>{{user.username}}</td>
+      <td>{{user.first_name}}</td>
+      <td>{{user.last_name}}</td>
+      <td>{{user.email}}</td>
+      <td> 
+        <button  type="button" class="btn   {% if user.is_active %}btn-outline-danger {% else %} btn-outline-success {% endif %} " data-bs-toggle="modal" data-bs-target="#exampleModal-{{user.id}}">
+          {% if user.is_active %} Deactivate {% else %} Activate {% endif %}
+          </button>
+          <div class="modal fade" id="exampleModal-{{user.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">{% if user.is_active %}User Deactivation {%else%}User Activation{% endif%}</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  Are you sure you want to  {% if user.is_active %} deactivate {% else %} activate {% endif %} user?
+                </div>
+                <div class="modal-footer">
+                 <a  class="btn btn-primary text-light" href = "{% url 'userstatus' user.id %}">Yes</a>                
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>  
+                </div>
+              </div>
+            </div>
+          </div>    
+        </td>
+    </tr>
+    {% endfor %}
+{% endblock content%}
